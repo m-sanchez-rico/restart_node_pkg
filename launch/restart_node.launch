@@ -1,0 +1,9 @@
+<launch>
+
+    <arg name="node_start_delay" default="20.0" /> <!-- time in seconds to delay the node launch-->
+
+    <node name="restart_node" pkg="restart_node_pkg" type="restart_node.py" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " output="screen">
+        <param name="elapsed_time" value="240" />  <!-- time in seconds -->
+    </node>
+
+</launch>
