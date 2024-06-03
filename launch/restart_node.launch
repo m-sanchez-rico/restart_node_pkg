@@ -5,6 +5,7 @@
 
     <node name="$(arg node_name)" pkg="restart_node_pkg" type="restart_node.py" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " output="screen">
         <param name="elapsed_time" value="100" />  <!-- time in seconds -->
+        <param name="max_mgs_number" value="200" />  <!-- number of message to confirm thta is working -->
     </node>
 
 </launch>
