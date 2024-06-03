@@ -12,9 +12,13 @@ class ImageMonitor:
         self.service = rospy.ServiceProxy('/rosmon_sensors/start_stop', StartStop) # TODO: Change the service name
         self.last_received_time = time.time()
         self.elapsed_time = rospy.get_param('~elapsed_time', 3*60)  # get parameter, default to 4 minutes
+        self.max_mgs_number = rospy.get_param('~max_mgs_number', 200)  # get parameter, default to 4 minutes
+        self.msg_counter = 0
+
 
     def image_callback(self, data):
         self.last_received_time = time.time()
+        self.msg_counter += 1
 
     def restart_node(self, node_name: str) -> bool:
         try:
@@ -40,6 +44,9 @@ class ImageMonitor:
                 if result:
                     rospy.loginfo("Node restarted")
                     rospy.signal_shutdown("Sensor screen restarted.")
+            if self.msg_counter > self.max_mgs_number:
+                rospy.loginfo("Node running correctly, screen restart not needed.")
+                rospy.signal_shutdown("Sensor working well, screen restart not needed.")
             rospy.sleep(1)
 
 if __name__ == "__main__":
